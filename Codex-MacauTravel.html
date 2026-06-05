@@ -1,0 +1,1251 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>澳門家族旅行行程</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --surface-soft: #f1f5f4;
+      --ink: #1f2933;
+      --muted: #5f6f7a;
+      --line: #d8e0e5;
+      --accent: #0f766e;
+      --accent-strong: #115e59;
+      --blue: #2563eb;
+      --amber: #b45309;
+      --danger: #b91c1c;
+      --green: #16803a;
+      --shadow: 0 12px 32px rgba(31, 41, 51, 0.08);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .trip-header {
+      display: grid;
+      gap: 18px;
+      padding: 26px 0 18px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: var(--accent-strong);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: clamp(1.85rem, 2.4rem, 2.4rem);
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+    }
+
+    h4 {
+      font-size: 1rem;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .summary-item {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      background: var(--surface-soft);
+    }
+
+    .summary-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .summary-item strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 0.95rem;
+    }
+
+    .tabs {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+
+    .tab-list {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0;
+      scrollbar-width: thin;
+    }
+
+    .tab-button {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      min-height: 42px;
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tab-button:hover {
+      border-color: var(--accent);
+    }
+
+    .tab-button[aria-selected="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    main {
+      padding: 24px 0 48px;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-head p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card,
+    .content-block,
+    .notice-block,
+    .day-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card,
+    .notice-block,
+    .day-card {
+      padding: 18px;
+    }
+
+    .content-block {
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 26px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      color: #ffffff;
+      background: var(--blue);
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge.green {
+      background: var(--green);
+    }
+
+    .badge.amber {
+      background: var(--amber);
+    }
+
+    .badge.red {
+      background: var(--danger);
+    }
+
+    .route {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+    }
+
+    .route strong {
+      color: var(--ink);
+    }
+
+    .flight-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      font-weight: 700;
+    }
+
+    .airport {
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      border-radius: var(--radius);
+      padding: 8px 10px;
+    }
+
+    .arrow {
+      color: var(--accent-strong);
+      font-weight: 900;
+    }
+
+    ul,
+    ol {
+      margin: 10px 0 0;
+      padding-left: 1.3rem;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      background: #ffffff;
+    }
+
+    .check-row input {
+      width: 18px;
+      height: 18px;
+      margin-top: 4px;
+      accent-color: var(--accent);
+    }
+
+    .check-row span {
+      flex: 1;
+    }
+
+    .check-row input:checked + span {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .small-action {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      min-height: 36px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .small-action:hover {
+      border-color: var(--accent);
+      color: var(--accent-strong);
+    }
+
+    .notice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .notice-block {
+      border-left: 5px solid var(--accent);
+      box-shadow: none;
+    }
+
+    .notice-block.warning {
+      border-left-color: var(--amber);
+    }
+
+    .notice-block.danger {
+      border-left-color: var(--danger);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .day-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .day-card {
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .day-title {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 18px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .day-title p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+      background: #ffffff;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 11px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #edf2f7;
+      color: #20303c;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    td:first-child {
+      white-space: nowrap;
+      font-weight: 700;
+      color: var(--accent-strong);
+    }
+
+    .map-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    .map-frame {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .map-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    figcaption {
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .info-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .info-item {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      background: var(--surface-soft);
+    }
+
+    .route-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .route-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #ffffff;
+    }
+
+    .route-card h3 {
+      margin-bottom: 8px;
+      color: var(--accent-strong);
+    }
+
+    .price {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    .callout {
+      border: 1px solid #f2c17b;
+      border-left: 5px solid var(--amber);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      background: #fff7ed;
+      margin-top: 12px;
+    }
+
+    .footer-note {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 980px) {
+      .summary-grid,
+      .grid.three,
+      .notice-grid,
+      .route-grid,
+      .map-layout {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 22px, 1180px);
+      }
+
+      .trip-header {
+        padding-top: 18px;
+      }
+
+      .summary-grid,
+      .grid.two,
+      .grid.three,
+      .notice-grid,
+      .route-grid,
+      .map-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .card,
+      .content-block,
+      .notice-block {
+        padding: 15px;
+      }
+
+      .day-title {
+        flex-direction: column;
+      }
+
+      table {
+        min-width: 640px;
+      }
+    }
+
+    @media print {
+      .tabs,
+      .small-action {
+        display: none;
+      }
+
+      .tab-panel {
+        display: block;
+        break-inside: avoid;
+        margin-bottom: 22px;
+      }
+
+      .card,
+      .content-block,
+      .notice-block,
+      .day-card {
+        box-shadow: none;
+      }
+
+      body {
+        background: #ffffff;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell trip-header">
+      <div>
+        <p class="eyebrow">2026/06/06 至 2026/06/09</p>
+        <h1>澳門家族旅行行程</h1>
+        <p class="lead">以新濠影匯酒店為住宿中心，整合航班、行前準備、每日行程、輕軌與接駁車、餐飲、採購與入境注意事項。</p>
+      </div>
+      <div class="summary-grid" aria-label="旅行摘要">
+        <div class="summary-item">
+          <span>旅居地點</span>
+          <strong>新濠影匯酒店</strong>
+        </div>
+        <div class="summary-item">
+          <span>同行設定</span>
+          <strong>2 位成人 + 1 位 6 歲小孩</strong>
+        </div>
+        <div class="summary-item">
+          <span>匯率基準</span>
+          <strong>1 MOP 約 TWD 3.89</strong>
+        </div>
+        <div class="summary-item">
+          <span>交通主軸</span>
+          <strong>輕軌、接駁車、公車</strong>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="頁籤導覽">
+    <div class="shell tab-list" role="tablist">
+      <button class="tab-button" type="button" role="tab" aria-selected="true" aria-controls="tab-home" id="tabbtn-home" data-tab="home">首頁</button>
+      <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-daily" id="tabbtn-daily" data-tab="daily">每日行程</button>
+      <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-lrt" id="tabbtn-lrt" data-tab="lrt">澳門輕軌</button>
+      <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-shuttle" id="tabbtn-shuttle" data-tab="shuttle">酒店接駁</button>
+      <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-routes" id="tabbtn-routes" data-tab="routes">景點交通</button>
+      <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-food" id="tabbtn-food" data-tab="food">餐飲美食</button>
+      <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-shopping" id="tabbtn-shopping" data-tab="shopping">採購資訊</button>
+      <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="tab-notes" id="tabbtn-notes" data-tab="notes">注意事項</button>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <section class="tab-panel active" id="tab-home" role="tabpanel" aria-labelledby="tabbtn-home" data-panel="home">
+      <div class="section-head">
+        <div>
+          <h2>首頁總覽</h2>
+          <p>先看航班、行前準備與高風險提醒；出門前可直接使用下方勾選清單。</p>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <article class="card">
+          <div class="card-header">
+            <h3>去程航班</h3>
+            <span class="badge">6/6</span>
+          </div>
+          <div class="route">
+            <strong>2026-06-06 16:25 起飛，18:05 抵達</strong>
+            <span>台中清泉崗機場（RMQ／第二航廈）至澳門國際機場（MFM）</span>
+          </div>
+          <div class="flight-line">
+            <span class="airport">RMQ 16:25</span>
+            <span class="arrow">→</span>
+            <span class="airport">MFM 18:05</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>回程航班</h3>
+            <span class="badge green">6/9</span>
+          </div>
+          <div class="route">
+            <strong>2026-06-09 19:15 起飛，21:10 抵達</strong>
+            <span>澳門國際機場（MFM）至台中清泉崗機場（RMQ／第二航廈）</span>
+          </div>
+          <div class="flight-line">
+            <span class="airport">MFM 19:15</span>
+            <span class="arrow">→</span>
+            <span class="airport">RMQ 21:10</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="content-block" style="margin-top: 18px;">
+        <h2>行前準備</h2>
+        <div class="grid two" style="margin-top: 14px;">
+          <div>
+            <h3>托運行李提醒</h3>
+            <ol>
+              <li>噴霧、膠狀、液體且體積大於 100ml 的容器需放托運。</li>
+              <li>噴霧罐不得超過 500ml。</li>
+              <li>自拍棒若管徑超過 1 公分、收合超過 60 公分，不能帶上飛機。</li>
+              <li>剪刀、指甲刀、刀具、鑷子、腳架、長柄雨傘等尖銳或長柄物品需托運。</li>
+              <li>寄艙行李每件上限 23 公斤。</li>
+            </ol>
+          </div>
+          <div>
+            <h3>出發前確認</h3>
+            <ul>
+              <li>航班時間：去程 2026-06-06，回程 2026-06-09。</li>
+              <li>旅居地點：新濠影匯酒店（Studio City Hotel）。</li>
+              <li>交通現金：公車現金 MOP 6，不找零；輕軌售票機不收港幣現金。</li>
+              <li>同行有 6 歲小孩，水舞間與室內冷氣場所建議帶薄外套。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <article class="card">
+          <div class="card-header">
+            <h2>必備證件及文件</h2>
+            <button class="small-action" type="button" data-clear="docs">清除勾選</button>
+          </div>
+          <div class="checklist" data-checklist="docs">
+            <label class="check-row"><input type="checkbox" data-key="passport"><span><strong>護照</strong></span></label>
+            <label class="check-row"><input type="checkbox" data-key="mop-cash"><span>澳門幣現金</span></label>
+            <label class="check-row"><input type="checkbox" data-key="ticket"><span>電子機票憑證（登機證）</span></label>
+            <label class="check-row"><input type="checkbox" data-key="hotel"><span>飯店住宿憑證</span></label>
+            <label class="check-row"><input type="checkbox" data-key="show"><span>預訂票券憑證（水舞間門票、新濠影匯自助餐票）</span></label>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>行李打包清單</h2>
+            <button class="small-action" type="button" data-clear="packing">清除勾選</button>
+          </div>
+          <div class="checklist" data-checklist="packing">
+            <label class="check-row"><input type="checkbox" data-key="scale"><span>行李秤</span></label>
+            <label class="check-row"><input type="checkbox" data-key="rain"><span>雨傘、雨衣</span></label>
+            <label class="check-row"><input type="checkbox" data-key="jacket"><span>防寒外套（長袖、薄外套）</span></label>
+            <label class="check-row"><input type="checkbox" data-key="charger"><span>充電豆腐頭、手機充電線、行動電源</span></label>
+            <label class="check-row"><input type="checkbox" data-key="medicine"><span>感冒藥、退燒藥、暈船藥等備用藥品</span></label>
+            <label class="check-row"><input type="checkbox" data-key="underwear"><span>免洗內褲、免洗襪</span></label>
+            <label class="check-row"><input type="checkbox" data-key="wipes"><span>濕紙巾、酒精擦</span></label>
+          </div>
+        </article>
+      </div>
+
+      <div class="content-block" style="margin-top: 18px;">
+        <h2>注意事項摘要</h2>
+        <div class="notice-grid" style="margin-top: 14px;">
+          <div class="notice-block danger">
+            <h3>台灣入境防檢</h3>
+            <p>肉切酥、雞仔餅、肉鬆鳳凰卷、豬肉乾、牛肉乾、含肉鬆糕餅，禁止攜帶入境台灣。</p>
+          </div>
+          <div class="notice-block warning">
+            <h3>水舞間觀賞</h3>
+            <p>劇院空調強，建議攜帶薄外套；前排潑水席雖提供雨衣，仍可替小孩多備一套衣物。</p>
+          </div>
+          <div class="notice-block">
+            <h3>貨幣與交通</h3>
+            <p>澳門幣與港幣常見 1:1 使用但不退差價；公車不找零，輕軌建議備澳門幣或電子支付。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-daily" role="tabpanel" aria-labelledby="tabbtn-daily" data-panel="daily">
+      <div class="section-head">
+        <div>
+          <h2>每日行程</h2>
+          <p>行程時間為暫定參考，可依小孩體力、天氣與排隊狀況彈性調整。</p>
+        </div>
+      </div>
+
+      <div class="day-grid">
+        <article class="day-card">
+          <div class="day-title">
+            <div>
+              <h3>6月6日（六）澳門機場 → 新濠影匯 → 晚餐</h3>
+              <p>抵達日以入境、入住與飯店周邊晚餐為主。</p>
+            </div>
+            <span class="badge">抵達日</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>時間</th><th>行程</th><th>交通</th><th>備註/建議</th></tr></thead>
+              <tbody>
+                <tr><td>18:05</td><td>抵達澳門國際機場 MFM</td><td>-</td><td>入境、領行李抓 40-60 分鐘。</td></tr>
+                <tr><td>19:00-19:30</td><td>機場 → 新濠影匯</td><td>優先：新濠影匯/新濠天地機場接駁</td><td>可搭輕軌機場站到蓮花站。</td></tr>
+                <tr><td>20:00 後</td><td>晚餐（待補）</td><td>飯店內步行</td><td>穩定方案：八方美食廣場、華人冰室、映星匯大堂咖啡；若訂得到位，可選星匯餐廳晚餐自助餐。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="day-card">
+          <div class="day-title">
+            <div>
+              <h3>6月7日（日）巴黎人早餐 → 大三巴 → 水舞間</h3>
+              <p>半島步行景點較多，建議少帶推車並保留回程接駁時間。</p>
+            </div>
+            <span class="badge amber">半島日</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>時間</th><th>行程</th><th>交通</th><th>備註/建議</th></tr></thead>
+              <tbody>
+                <tr><td>08:30-10:00</td><td>早餐：巴黎人自助餐 Le Buffet</td><td>新濠影匯到巴黎人可步行</td><td>早餐餐期 07:00-13:00，建議提早入場。</td></tr>
+                <tr><td>10:30-11:30</td><td>巴黎人/威尼斯人/倫敦人 → 澳門中區</td><td>金沙系澳門中區接駁車</td><td>週五至週日有班；下車後步行至議事亭前地、大三巴。</td></tr>
+                <tr><td>11:30-15:30</td><td>大三巴、議事亭前地、玫瑰堂、手信街</td><td>步行</td><td>大三巴石階多，建議少帶推車。</td></tr>
+                <tr><td>15:30-17:00</td><td>大三巴周邊美食與伴手禮</td><td>步行</td><td>可買鉅記、晃記、咀香園；肉鬆/肉乾類不建議帶回台灣。</td></tr>
+                <tr><td>17:00-18:00</td><td>澳門中區 → 路氹</td><td>接駁車回巴黎人/倫敦人/威尼斯人</td><td>19:30 水舞間，建議 18:45 前到場。</td></tr>
+                <tr><td>19:30</td><td>水舞間</td><td>新濠天地</td><td>票務與入場規則以新濠天地公告為準。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="day-card">
+          <div class="day-title">
+            <div>
+              <h3>6月8日（一）旅遊塔 → 永利皇宮 → 輕軌回飯店</h3>
+              <p>本日重點是旅遊塔午餐、永利皇宮纜車與表演湖。</p>
+            </div>
+            <span class="badge green">輕軌日</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>時間</th><th>行程</th><th>交通</th><th>備註/建議</th></tr></thead>
+              <tbody>
+                <tr><td>08:30-10:00</td><td>早餐：新濠影匯星匯餐廳</td><td>飯店內</td><td>早餐 07:00-10:30。</td></tr>
+                <tr><td>12:00-12:50</td><td>新濠影匯 → 澳門旅遊塔</td><td>輕軌蓮花站 → 媽閣站，轉公車 60/65 到 M177 澳門旅遊塔</td><td>13:30 訂位。</td></tr>
+                <tr><td>13:30</td><td>澳門旅遊塔 360 度旋轉餐廳</td><td>-</td><td>用餐後可直接接觀景層或紀念品。</td></tr>
+                <tr><td>17:00-18:30</td><td>澳門旅遊塔 → 永利皇宮</td><td>搭旅遊塔免費接駁（美高梅／葡京系）</td><td>纜車約 16:00 起營運；表演湖日間每 30 分、18:00 後每 20 分一場。</td></tr>
+                <tr><td>晚間</td><td>永利皇宮 → 新濠影匯</td><td>輕軌路氹東站 → 蓮花站</td><td>永利皇宮最近輕軌站為路氹東站。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="day-card">
+          <div class="day-title">
+            <div>
+              <h3>6月9日（二）官也街 → 威尼斯人 → 機場</h3>
+              <p>離境日避免再跑半島，行李與機場時間優先。</p>
+            </div>
+            <span class="badge red">離境日</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>時間</th><th>行程</th><th>交通</th><th>備註/建議</th></tr></thead>
+              <tbody>
+                <tr><td>09:00</td><td>早餐：新濠影匯麥當勞</td><td>飯店內/附近</td><td>先確認機場接駁末班與班距。</td></tr>
+                <tr><td>10:00</td><td>退房寄行李</td><td>飯店</td><td>保留拿行李與移動時間。</td></tr>
+                <tr><td>10:30-13:00</td><td>官也街</td><td>輕軌蓮花站 → 排角站，步行 5-8 分鐘</td><td>適合午餐、小吃、伴手禮。</td></tr>
+                <tr><td>13:00-15:30</td><td>自動步行系統 → 威尼斯人</td><td>官也街經望德聖母灣自動步行系統到威尼斯人</td><td>買安德魯蛋塔最順。</td></tr>
+                <tr><td>15:30-16:20</td><td>威尼斯人/巴黎人/倫敦人補買</td><td>步行</td><td>可順看 Starbucks Reserve 城市杯。</td></tr>
+                <tr><td>16:20-16:40</td><td>回新濠影匯拿行李</td><td>步行</td><td>不建議再跑澳門半島。</td></tr>
+                <tr><td>17:00</td><td>抵達澳門機場</td><td>新濠機場接駁</td><td>19:15 起飛，17:00 前到機場。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-lrt" role="tabpanel" aria-labelledby="tabbtn-lrt" data-panel="lrt">
+      <div class="section-head">
+        <div>
+          <h2>澳門輕軌（LRT）</h2>
+          <p>本頁籤保留文字資訊並插入提供的輕軌路線圖，方便現場對照站名。</p>
+        </div>
+      </div>
+
+      <div class="map-layout">
+        <figure class="map-frame">
+          <img src="MACAU_TRIP_澳門輕軌路線圖_v1_2026-06-05.png" alt="澳門輕軌路線圖，包含氹仔線、石排灣線與橫琴線">
+          <figcaption>路線圖來源：使用者提供之「澳門輕軌路線圖.png」。</figcaption>
+        </figure>
+
+        <aside class="content-block">
+          <h3>本行程會用到的站</h3>
+          <div class="info-list">
+            <div class="info-item"><strong>蓮花站</strong><br>新濠影匯最近站，步行約 5 分鐘。</div>
+            <div class="info-item"><strong>機場站</strong><br>抵達或離境時可作為接駁備案。</div>
+            <div class="info-item"><strong>排角站</strong><br>前往官也街，步行約 5-8 分鐘。</div>
+            <div class="info-item"><strong>媽閣站</strong><br>6/8 前往旅遊塔時可轉公車 60/65。</div>
+            <div class="info-item"><strong>路氹東站</strong><br>永利皇宮最近站，步行約 2 分鐘。</div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="content-block" style="margin-top: 18px;">
+        <h2>輕軌文字資訊</h2>
+        <div class="grid two" style="margin-top: 14px;">
+          <div>
+            <h3>路線</h3>
+            <ul>
+              <li><strong>氹仔線：</strong>媽閣 → 海洋 → 馬會 → 運動場 → 排角 → 路氹西 → 蓮花 → 協和醫院 → 東亞運 → 路氹東 → 科大 → 機場 → 氹仔碼頭，全程約 28 分鐘。</li>
+              <li><strong>石排灣線：</strong>經協和醫院站轉乘，可達石排灣。</li>
+              <li><strong>橫琴線：</strong>經蓮花站轉乘至橫琴口岸。</li>
+            </ul>
+          </div>
+          <div>
+            <h3>營運與票價</h3>
+            <ul>
+              <li>營運時間：週一至四 06:30-23:15；週五至日及公眾假期 06:30-23:59。</li>
+              <li>班距：氹仔線約 5-10.5 分鐘一班；石排灣線、橫琴線約 6 分鐘一班。</li>
+              <li>票價：3 站內 MOP 6、6 站內 MOP 8、9 站內 MOP 10、12 站內 MOP 12；持輕軌通電子預付卡半價。</li>
+              <li>付費注意：站內售票機不收港幣現金，請備澳門幣或使用支援的電子支付。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-block">
+        <h2>公車補充</h2>
+        <ul>
+          <li>一般現金車資以 MOP 6（TWD 約 23）估算，不找零。</li>
+          <li>澳門旅遊塔可搭 9A、18、18B、23、26、32、60、65 到 M177 澳門旅遊塔站。</li>
+          <li>官也街 T320 氹仔官也街站可搭 11、15、22、28A、30、33、34。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-shuttle" role="tabpanel" aria-labelledby="tabbtn-shuttle" data-panel="shuttle">
+      <div class="section-head">
+        <div>
+          <h2>各大酒店接駁車資訊</h2>
+          <p>班次以現場與飯店公告為準，以下整理為行程使用時的快速索引。</p>
+        </div>
+      </div>
+
+      <div class="content-block">
+        <h2>新濠影匯</h2>
+        <p class="muted">搭乘地點：新濠影匯接駁巴士大堂。生效資訊：2026/5/23。</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>目的地</th><th>由新濠影匯出發</th><th>往新濠影匯</th><th>班距</th></tr></thead>
+            <tbody>
+              <tr><td>關閘</td><td>09:35-23:30</td><td>09:00-23:00</td><td>6-8 分，21:00 後 15-20 分</td></tr>
+              <tr><td>氹仔客運碼頭及澳門國際機場</td><td>10:00-22:00</td><td>09:30-21:30</td><td>12-25 分</td></tr>
+              <tr><td>澳門中區</td><td>12:00-21:30</td><td>12:30-21:15</td><td>15 分</td></tr>
+              <tr><td>橫琴澳方口岸</td><td>10:20-21:00</td><td>09:45-20:30</td><td>5-10 分</td></tr>
+              <tr><td>新濠天地</td><td>09:35-23:30</td><td>09:20-23:20</td><td>6-8 分</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">部分旅遊資訊網提到新濠影匯有往返澳門旅遊塔或半島線，但最新官方時刻表未列旅遊塔線，建議現場向櫃檯確認。</div>
+      </div>
+
+      <div class="grid two">
+        <article class="card">
+          <h2>巴黎人</h2>
+          <p class="muted">B1 層旅遊巴停車場；機場線於正門大堂。</p>
+          <ul>
+            <li>澳門國際機場：09:05-23:05 出發，09:00-23:00 前往巴黎人，班距 12-20 分。</li>
+            <li>澳門中區：11:05-19:05，週五至週日營運，班距 18-20 分。</li>
+            <li>氹仔舊城區（近官也街）：11:00-19:00，週五至週日營運。</li>
+            <li>氹仔碼頭：08:15-23:35 出發，08:45-23:59 前往巴黎人。</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>倫敦人</h2>
+          <p class="muted">東翼大堂、倫敦人購物中心、名匯南翼大堂。</p>
+          <ul>
+            <li>澳門國際機場：09:00-23:00，班距 12-20 分。</li>
+            <li>澳門中區：11:00-19:00，週五至週日營運。</li>
+            <li>氹仔碼頭：08:10-23:30 出發，08:45-23:59 前往倫敦人。</li>
+            <li>港珠澳大橋澳門口岸區：10:35-21:05 出發，10:00-21:00 前往倫敦人。</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>威尼斯人</h2>
+          <p class="muted">西翼大堂；氹仔碼頭線於正門大堂。</p>
+          <ul>
+            <li>澳門國際機場：09:00-23:00，班距 12-15 分。</li>
+            <li>澳門中區：11:00-19:00，週五至週日營運，班距 12-15 分。</li>
+            <li>關閘旅遊巴士站：09:30-22:00，班距 5-10 分。</li>
+            <li>氹仔碼頭：08:10-23:35 出發，08:45-23:59 前往威尼斯人。</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>永利皇宮與美獅美高梅</h2>
+          <ul>
+            <li>永利皇宮最近輕軌站為路氹東站，步行約 2 分。</li>
+            <li>永利皇宮往永利澳門半島：09:30-22:00，班距 15-20 分。</li>
+            <li>美高梅系免費穿梭巴士可達澳門旅遊塔，是前往旅遊塔的實用方案。</li>
+            <li>美獅美高梅主要往返關閘、港澳碼頭、氹仔碼頭、澳門國際機場、橫琴口岸等。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-routes" role="tabpanel" aria-labelledby="tabbtn-routes" data-panel="routes">
+      <div class="section-head">
+        <div>
+          <h2>景點交通</h2>
+          <p>整理大三巴、澳門旅遊塔與官也街的主要動線。</p>
+        </div>
+      </div>
+
+      <div class="route-grid">
+        <article class="route-card">
+          <h3>往返大三巴</h3>
+          <ul>
+            <li>大三巴本身無輕軌站，車輛不能直達牌坊下方。</li>
+            <li>最實用下車點：澳門中區、英皇娛樂酒店旁、新馬路/大豐、營地大街或議事亭前地。</li>
+            <li>常用公車：2、3、3A、3X、6A、8A、10、10A、11、18、18B、19、26A、33、101X。</li>
+            <li>新濠影匯可搭澳門中區接駁線到英皇下車，再步行約 10 分。</li>
+          </ul>
+        </article>
+
+        <article class="route-card">
+          <h3>往返澳門旅遊塔</h3>
+          <ul>
+            <li>直達公車站為 M177 澳門旅遊塔站。</li>
+            <li>官方列明公車：9A、18、18B、23、26、32、60、65。</li>
+            <li>旅遊塔也是美高梅系、葡京系免費發財車停靠點。</li>
+            <li>新濠影匯可搭 26 號公車、轉美高梅免費接駁，或計程車約 MOP 55-65。</li>
+          </ul>
+        </article>
+
+        <article class="route-card">
+          <h3>往返官也街</h3>
+          <ul>
+            <li>最近輕軌站為排角站，步行約 5 分。</li>
+            <li>新濠影匯可搭輕軌蓮花站 → 排角站，1 站，MOP 6。</li>
+            <li>威尼斯人可走望德聖母灣自動步行系統，約 12 分直達官也街。</li>
+            <li>倫敦人可步行經巴黎人、自動步行系統到官也街，約 12-18 分。</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="content-block" style="margin-top: 18px;">
+        <h2>6/8 推薦動線</h2>
+        <p><strong>新濠影匯 → 蓮花站 → 媽閣站 → 公車 60/65 至 M177 → 澳門旅遊塔 → 美高梅/葡京系接駁 → 永利皇宮 → 路氹東站 → 蓮花站 → 新濠影匯。</strong></p>
+        <p class="muted">若小孩體力下降，可把旅遊塔後段改成計程車或直接回飯店，保留晚間休息時間。</p>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-food" role="tabpanel" aria-labelledby="tabbtn-food" data-panel="food">
+      <div class="section-head">
+        <div>
+          <h2>餐飲美食</h2>
+          <p>整合飯店自助餐、非自助餐與大三巴、官也街推薦美食。</p>
+        </div>
+      </div>
+
+      <div class="content-block">
+        <h2>各大酒店自助餐</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>地點</th><th>餐期/價格摘要</th><th>特色</th></tr></thead>
+            <tbody>
+              <tr><td>新濠影匯 星匯餐廳 Spotlight</td><td>早餐成人 MOP 238；午餐成人 MOP 358；晚餐成人 MOP 628，均另加 10% 服務費。</td><td>海鮮、刺身壽司、兒童美食區，適合飯店內穩定用餐。</td></tr>
+              <tr><td>巴黎人 Le Buffet</td><td>早午餐成人 MOP 362；晚餐成人約 MOP 688，均另加 10% 服務費。</td><td>靠窗可見巴黎鐵塔，甜點與海鮮選擇多。</td></tr>
+              <tr><td>倫敦人 Churchill's Table</td><td>自助早餐 07:00-13:00；下午茶依主題與日期不同。</td><td>英倫主題，愛麗絲奇幻仙境下午茶適合親子。</td></tr>
+              <tr><td>威尼斯人 渢竹自助餐 Bambu</td><td>午餐 11:00-15:00；晚餐 18:00-22:00，價格波動大。</td><td>東南亞風味、粵式燒味、海鮮，CP 值高。</td></tr>
+              <tr><td>美獅美高梅 濤岸 Coast</td><td>目前僅早餐為自助餐，成人 MOP 218。</td><td>美國西岸／加州風味，親子友善。</td></tr>
+              <tr><td>永利皇宮 咖啡苑 Fontana</td><td>早餐成人 MOP 268；晚膳成人 MOP 628，均另加 10% 服務費。</td><td>面向表演湖，適合搭配永利皇宮行程。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="content-block">
+        <h2>非自助餐知名餐廳</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>酒店</th><th>早餐/早午餐</th><th>午餐</th><th>晚餐</th><th>特色</th></tr></thead>
+            <tbody>
+              <tr><td>新濠影匯</td><td>映星匯大堂咖啡、華人冰室</td><td>玥龍軒、真點心小廚、八方美食廣場</td><td>玥龍軒、瀛菊、意匯、遊泰號</td><td>飯店內選擇多，玥龍軒為米芝蓮一星粵菜。</td></tr>
+              <tr><td>巴黎人</td><td>La Seine/咖啡類輕食</td><td>Brasserie、巴黎軒、御蓮宮</td><td>Brasserie、La Chine、Lotus Palace</td><td>Brasserie 適合午晚餐；La Chine 有景觀感。</td></tr>
+              <tr><td>倫敦人</td><td>丘吉爾餐廳</td><td>Gordon Ramsay Pub & Grill、Chiado、The Mews</td><td>Gordon Ramsay Pub & Grill、Chiado、The Mews</td><td>英式、葡式、泰式選擇完整。</td></tr>
+              <tr><td>威尼斯人</td><td>安德魯餅店及咖啡店</td><td>品粵軒、醉江南、喜樂拉麵</td><td>品粵軒、醉江南、喜樂拉麵</td><td>安德魯蛋塔適合 6/9 順買。</td></tr>
+              <tr><td>美獅美高梅</td><td>Coast、Anytime</td><td>Coast、Chún、Aji、好鍋</td><td>Aji、Chún、Coast、Grill 58</td><td>Aji 於 2025 獲米芝蓮一星；Coast 親子友善。</td></tr>
+              <tr><td>永利皇宮</td><td>Fontana、咖啡/糕點</td><td>永利宮、泓日本料理、永利扒房</td><td>永利宮、川江月、永利扒房</td><td>高級餐廳多，價格高。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <article class="card">
+          <h2>大三巴推薦美食</h2>
+          <ul>
+            <li>Mariazinha：葡式/地中海，想坐下吃葡菜可選。</li>
+            <li>ALBERGUE 1601：葡式，瘋堂斜巷氛圍好。</li>
+            <li>蕃茄屋葡式美食：葡式平價，親子友善。</li>
+            <li>黃枝記粥麵：竹昇、雲吞麵，議事亭前地老店。</li>
+            <li>義順牛奶：雙皮燉奶，在地人氣甜品。</li>
+            <li>檸檬車露 Lemoncello：義式 Gelato，大三巴街順路。</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>官也街推薦美食</h2>
+          <ul>
+            <li>安德魯餅店：葡式蛋塔，6/9 可在官也街或威尼斯人買。</li>
+            <li>莫義記：榴槤雪糕、木糠布甸。</li>
+            <li>誠昌飯店：水蟹粥，午餐可吃但排隊風險高。</li>
+            <li>老 Day 牛雜：街頭牛雜，小吃型。</li>
+            <li>晃記餅家：傳統餅家，手信備案。</li>
+            <li>António Macau：正宗葡國菜，若要正式用餐可列備案。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-shopping" role="tabpanel" aria-labelledby="tabbtn-shopping" data-panel="shopping">
+      <div class="section-head">
+        <div>
+          <h2>採購資訊</h2>
+          <p>伴手禮與星巴克城市杯整理，並標示入境台灣限制。</p>
+        </div>
+      </div>
+
+      <div class="content-block">
+        <h2>伴手禮順手購買</h2>
+        <p class="muted">採購策略：6/7 大三巴買第一輪 → 6/9 官也街補貨 → 機場最後補件。</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>品項</th><th>建議購買地點</th><th>參考價格</th><th>備註</th></tr></thead>
+            <tbody>
+              <tr><td>鉅記：杏仁餅、花生軟糖</td><td>大三巴街、巴黎人、機場禁區</td><td>花生軟糖約 MOP 45</td><td>分店最多，最不繞路。</td></tr>
+              <tr><td>咀香園／英記：杏仁餅、蛋卷</td><td>大三巴街、議事亭前地、新濠影匯購物大街</td><td>原粒杏仁餅約 MOP 128／盒</td><td>包裝精美，適合送禮。</td></tr>
+              <tr><td>晃記餅家：肉切酥、雞仔餅</td><td>官也街老店</td><td>約 MOP 30-60／盒</td><td>含肉製品不可帶回台灣，購買前需確認成分。</td></tr>
+              <tr><td>安德魯葡撻（盒裝）</td><td>官也街、威尼斯人 3 樓美食街</td><td>單個約 MOP 11；6 入約 MOP 65</td><td>完全在 6/9 動線上。</td></tr>
+              <tr><td>LCM 彩繪葡式罐頭沙丁魚</td><td>官也街</td><td>約 MOP 35-80／罐</td><td>葡國風情特色，不易碎。</td></tr>
+              <tr><td>澳門旅遊塔紀念品</td><td>澳門旅遊塔</td><td>約 MOP 49-425.8</td><td>6/8 午餐行程可順買。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout"><strong>入境台灣注意：</strong>含肉鬆／豬肉的製品不可帶回台灣；杏仁餅易碎，建議手提。</div>
+      </div>
+
+      <div class="content-block">
+        <h2>星巴克城市杯購買資訊</h2>
+        <p>澳門城市限定隨行杯約 <span class="price">MOP 88（TWD 342）</span>；煙火感溫咖啡杯約 <span class="price">MOP 198（TWD 770）</span>。星巴克不提供即時城市杯庫存查詢，建議先到倫敦人臻選店看，沒有再到威尼斯人或機場店碰運氣。</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>門市</th><th>地點</th><th>資訊</th><th>建議</th></tr></thead>
+            <tbody>
+              <tr><td>Starbucks Reserve 倫敦人</td><td>倫敦人購物中心 2 樓 2203G/2200 號鋪</td><td>官方頁列 08:00-23:00；臻選店資料列 11:00-22:00</td><td>首選，6/9 可順路確認澳門杯庫存。</td></tr>
+              <tr><td>Starbucks Reserve 美獅美高梅</td><td>美獅美高梅</td><td>澳門首間 Reserve Experience Bar</td><td>若路過可看。</td></tr>
+              <tr><td>Starbucks 威尼斯人</td><td>威尼斯人購物中心</td><td>參考資料列為順路門市</td><td>6/9 買蛋塔時順看。</td></tr>
+              <tr><td>Starbucks 機場離境店</td><td>澳門機場離境安檢後候機區</td><td>依航班與現場營業狀態</td><td>最後補救，不佔手提額度。</td></tr>
+              <tr><td>Starbucks 議事亭前地店</td><td>澳門半島議事亭前地</td><td>約 07:00 起</td><td>6/7 大三巴一帶順經。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-notes" role="tabpanel" aria-labelledby="tabbtn-notes" data-panel="notes">
+      <div class="section-head">
+        <div>
+          <h2>注意事項</h2>
+          <p>將原始資料中的高風險提醒獨立成頁籤，方便出發前與購物前檢查。</p>
+        </div>
+      </div>
+
+      <div class="grid three">
+        <article class="notice-block danger">
+          <h2>台灣海關防檢</h2>
+          <ul>
+            <li>澳門老字號伴手禮常見品項可能含豬肉或豬油渣成分。</li>
+            <li>肉切酥、雞仔餅、肉鬆鳳凰卷、豬肉乾、牛肉乾、含肉鬆的糕餅，一律禁止攜帶入境台灣。</li>
+            <li>查獲可能面臨新台幣 20 萬元至 100 萬元罰款。</li>
+            <li>採購時請明確告知店員：「要帶回台灣，需全面無肉製品」。</li>
+          </ul>
+        </article>
+
+        <article class="notice-block warning">
+          <h2>水舞間觀賞</h2>
+          <ul>
+            <li>新濠天地大劇院空調極強，同行有小孩與大人，務必攜帶薄外套或長袖罩衫。</li>
+            <li>前四排若為潑水席，飯店會提供雨衣，但仍建議為小孩多備一套乾淨衣物。</li>
+            <li>6/7 行程建議 18:45 前到場，避免半島回程壓縮入場時間。</li>
+          </ul>
+        </article>
+
+        <article class="notice-block">
+          <h2>貨幣與找零</h2>
+          <ul>
+            <li>澳門全面接受澳門幣（MOP）與港幣（HKD），常見 1:1 使用但不補差價。</li>
+            <li>度假村或餐廳使用港幣付款，常見找回澳門幣。</li>
+            <li>全澳門多數店家與公共交通工具拒收港幣 1000 元大鈔、部分年份 500 元紙鈔與港幣硬幣。</li>
+            <li>出發前準備港幣 100 元面額小鈔，或當地 ATM 提取澳門幣。</li>
+            <li>公車與輕軌首選電子錢包或準備足額澳門幣零錢。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <p class="footer-note">資料來源：使用者提供之「澳門-行程確定版.md」、「行前準備.md」與「澳門輕軌路線圖.png」。行程、價格與班次仍需以現場或官方公告為準。</p>
+  </main>
+
+  <script>
+    const buttons = Array.from(document.querySelectorAll(".tab-button"));
+    const panels = Array.from(document.querySelectorAll(".tab-panel"));
+
+    function activateTab(tabName, updateHash = true) {
+      buttons.forEach((button) => {
+        const selected = button.dataset.tab === tabName;
+        button.setAttribute("aria-selected", String(selected));
+      });
+
+      panels.forEach((panel) => {
+        panel.classList.toggle("active", panel.dataset.panel === tabName);
+      });
+
+      if (updateHash) {
+        history.replaceState(null, "", `#${tabName}`);
+      }
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => activateTab(button.dataset.tab));
+    });
+
+    const savedTab = location.hash.replace("#", "");
+    if (savedTab && buttons.some((button) => button.dataset.tab === savedTab)) {
+      activateTab(savedTab, false);
+    }
+
+    const storageKey = "macauTripChecklist";
+
+    function readChecklistState() {
+      try {
+        return JSON.parse(localStorage.getItem(storageKey)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function writeChecklistState(state) {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(state));
+      } catch {
+        // 若瀏覽器停用 localStorage，清單仍可在目前頁面操作，只是不保存狀態。
+      }
+    }
+
+    function checkboxId(input) {
+      const list = input.closest("[data-checklist]").dataset.checklist;
+      return `${list}:${input.dataset.key}`;
+    }
+
+    const checklistState = readChecklistState();
+    document.querySelectorAll("[data-checklist] input[type='checkbox']").forEach((input) => {
+      input.checked = Boolean(checklistState[checkboxId(input)]);
+      input.addEventListener("change", () => {
+        const nextState = readChecklistState();
+        nextState[checkboxId(input)] = input.checked;
+        writeChecklistState(nextState);
+      });
+    });
+
+    document.querySelectorAll("[data-clear]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const listName = button.dataset.clear;
+        const nextState = readChecklistState();
+        document.querySelectorAll(`[data-checklist='${listName}'] input[type='checkbox']`).forEach((input) => {
+          input.checked = false;
+          nextState[checkboxId(input)] = false;
+        });
+        writeChecklistState(nextState);
+      });
+    });
+  </script>
+</body>
+</html>
