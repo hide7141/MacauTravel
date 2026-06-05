@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>澳門家族旅行 ｜ 版本選擇</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4ECDB;
+  --ink:#2C2417;
+  --ink-soft:#5C5240;
+  --line:#E0D3B8;
+  --blue:#155A6B;
+  --blue-deep:#0E4351;
+  --terra:#C0552E;
+  --terra-deep:#9c3f1f;
+  --gold:#B68A3A;
+  --green:#8DC11F;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  font-family:"Noto Sans TC",system-ui,sans-serif;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 15% 12%,rgba(192,85,46,.08),transparent 40%),
+    radial-gradient(circle at 85% 18%,rgba(21,90,107,.10),transparent 45%),
+    radial-gradient(circle at 50% 100%,rgba(182,138,58,.08),transparent 50%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;padding:48px 22px;position:relative;overflow-x:hidden;
+}
+/* azulejo tile texture */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
+  background-image:
+    linear-gradient(45deg,var(--blue) 25%,transparent 25%,transparent 75%,var(--blue) 75%),
+    linear-gradient(45deg,var(--blue) 25%,transparent 25%,transparent 75%,var(--blue) 75%);
+  background-size:60px 60px;background-position:0 0,30px 30px;
+}
+.wrap{position:relative;z-index:2;width:100%;max-width:980px;text-align:center}
+
+/* ---------- HEADER ---------- */
+.eyebrow{
+  font-family:"Fraunces",serif;font-style:italic;font-weight:600;
+  letter-spacing:.32em;text-transform:uppercase;font-size:.78rem;
+  color:var(--terra);opacity:0;animation:rise .7s .1s forwards;
+}
+h1{
+  font-family:"Noto Serif TC",serif;font-weight:900;
+  font-size:clamp(2.3rem,7vw,4rem);line-height:1.1;margin:10px 0 6px;
+  color:var(--blue-deep);opacity:0;animation:rise .7s .2s forwards;
+}
+h1 .accent{color:var(--terra)}
+.sub{
+  font-family:"Fraunces",serif;font-style:italic;font-size:clamp(1rem,2.6vw,1.35rem);
+  color:var(--gold);letter-spacing:.05em;opacity:0;animation:rise .7s .3s forwards;
+}
+.divider{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  margin:22px auto 6px;max-width:340px;color:var(--ink-soft);
+  opacity:0;animation:rise .7s .4s forwards;
+}
+.divider .ln{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+.divider .dot{width:7px;height:7px;border-radius:50%;background:var(--terra);transform:rotate(45deg)}
+.lead{
+  color:var(--ink-soft);font-size:.96rem;margin:4px auto 0;max-width:460px;
+  opacity:0;animation:rise .7s .45s forwards;
+}
+
+/* ---------- CARDS ---------- */
+.cards{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:42px;
+}
+.card{
+  position:relative;display:flex;flex-direction:column;text-align:left;
+  background:#FFFBF2;border:1px solid var(--line);border-radius:24px;
+  padding:34px 30px 28px;text-decoration:none;color:inherit;overflow:hidden;
+  box-shadow:0 18px 44px -28px rgba(44,36,23,.5);
+  transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s,border-color .4s;
+  opacity:0;animation:rise .8s forwards;
+}
+.card.c1{animation-delay:.55s}
+.card.c2{animation-delay:.7s}
+.card::before{ /* top accent bar */
+  content:"";position:absolute;top:0;left:0;right:0;height:6px;
+  transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.8,.2,1);
+}
+.card::after{ /* corner glow */
+  content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;
+  opacity:0;transition:opacity .5s;filter:blur(8px);
+}
+.card.claude::before{background:linear-gradient(90deg,var(--terra),var(--gold))}
+.card.codex::before{background:linear-gradient(90deg,var(--blue),var(--green))}
+.card.claude::after{background:radial-gradient(circle,rgba(192,85,46,.28),transparent 70%)}
+.card.codex::after{background:radial-gradient(circle,rgba(21,90,107,.30),transparent 70%)}
+.card:hover{transform:translateY(-10px);box-shadow:0 34px 60px -28px rgba(44,36,23,.55)}
+.card:hover::before{transform:scaleX(1)}
+.card:hover::after{opacity:1}
+.card.claude:hover{border-color:var(--terra)}
+.card.codex:hover{border-color:var(--blue)}
+
+.icon{
+  width:62px;height:62px;border-radius:18px;display:grid;place-items:center;
+  margin-bottom:20px;position:relative;z-index:2;
+  font-family:"Fraunces",serif;font-weight:900;font-size:1.9rem;color:#FFFBF2;
+  box-shadow:0 10px 22px -12px rgba(0,0,0,.45);
+}
+.card.claude .icon{background:linear-gradient(135deg,var(--terra),var(--terra-deep))}
+.card.codex .icon{background:linear-gradient(135deg,var(--blue),var(--blue-deep))}
+
+.ver-tag{
+  position:relative;z-index:2;align-self:flex-start;
+  font-family:"Fraunces",serif;font-weight:600;font-size:.66rem;letter-spacing:.18em;
+  text-transform:uppercase;padding:4px 12px;border-radius:30px;margin-bottom:12px;
+}
+.card.claude .ver-tag{background:rgba(192,85,46,.12);color:var(--terra-deep)}
+.card.codex .ver-tag{background:rgba(21,90,107,.12);color:var(--blue-deep)}
+
+.card h2{
+  font-family:"Noto Serif TC",serif;font-weight:900;font-size:1.5rem;
+  position:relative;z-index:2;line-height:1.2;
+}
+.card .desc{
+  position:relative;z-index:2;color:var(--ink-soft);font-size:.92rem;
+  margin:10px 0 24px;line-height:1.65;
+}
+.enter{
+  position:relative;z-index:2;margin-top:auto;display:inline-flex;align-items:center;gap:9px;
+  font-family:"Noto Serif TC",serif;font-weight:700;font-size:.98rem;
+}
+.card.claude .enter{color:var(--terra-deep)}
+.card.codex .enter{color:var(--blue-deep)}
+.enter .arrow{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.card:hover .enter .arrow{transform:translateX(7px)}
+.enter .line{flex:1;height:1.5px;border-radius:2px;background:currentColor;opacity:.25;
+  transform:scaleX(.4);transform-origin:left;transition:transform .4s,opacity .4s}
+.card:hover .enter .line{transform:scaleX(1);opacity:.45}
+
+footer{
+  margin-top:46px;color:var(--ink-soft);font-size:.8rem;
+  opacity:0;animation:rise .7s .9s forwards;
+}
+footer .disp{font-family:"Fraunces",serif;font-style:italic;color:var(--terra)}
+
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+@media(max-width:680px){
+  .cards{grid-template-columns:1fr;gap:18px;margin-top:34px}
+  .card{padding:28px 24px 24px}
+  body{padding:40px 18px}
+}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">Macau · Family Trip 2026</p>
+    <h1>澳門<span class="accent">家族旅行</span></h1>
+    <p class="sub">06 Jun — 09 Jun 2026 · 新濠影匯</p>
+
+    <div class="divider"><span class="ln"></span><span class="dot"></span><span class="ln"></span></div>
+    <p class="lead">請選擇要瀏覽的行程網頁版本</p>
+
+    <div class="cards">
+      <a class="card claude c1" href="https://hide7141.github.io/MacauTravel/Claude-MacauTravel.html">
+        <span class="icon">C</span>
+        <span class="ver-tag">Version 01</span>
+        <h2>Claude 版本</h2>
+        <p class="desc">由 Claude 設計製作的行程網頁，葡式編輯風格、含勾選清單與輕軌路線圖。</p>
+        <span class="enter">進入瀏覽 <span class="line"></span><span class="arrow">→</span></span>
+      </a>
+
+      <a class="card codex c2" href="https://hide7141.github.io/MacauTravel/Codex-MacauTravel.html">
+        <span class="icon">X</span>
+        <span class="ver-tag">Version 02</span>
+        <h2>Codex 版本</h2>
+        <p class="desc">由 Codex 設計製作的行程網頁，提供另一種版面與呈現方式，可互相對照參考。</p>
+        <span class="enter">進入瀏覽 <span class="line"></span><span class="arrow">→</span></span>
+      </a>
+    </div>
+
+    <footer><span class="disp">Boa viagem!</span> ｜ 澳門家族旅行 2026.06.06–06.09</footer>
+  </div>
+</body>
+</html>
